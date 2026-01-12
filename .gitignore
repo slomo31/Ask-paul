@@ -1,0 +1,18 @@
+# Dependencies
+node_modules/
+
+# Next.js
+.next/
+out/
+
+# Environment variables (IMPORTANT - keeps your API key secret)
+.env
+.env.local
+.env.production
+
+# Debug
+npm-debug.log*
+
+# Misc
+.DS_Store
+*.pem
