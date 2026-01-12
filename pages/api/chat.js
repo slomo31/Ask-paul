@@ -60,16 +60,22 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { messages } = req.body;
+    const { messages, userName } = req.body;
 
     if (!messages || !Array.isArray(messages)) {
       return res.status(400).json({ error: "Messages array is required" });
     }
 
+    // Personalize the system prompt if we know the user's name
+    let systemPrompt = PAUL_SYSTEM_PROMPT;
+    if (userName) {
+      systemPrompt += `\n\nThe person you're speaking with is named ${userName}. Use their name occasionally (but not excessively) to make the conversation feel personal and warm.`;
+    }
+
     const response = await anthropic.messages.create({
       model: "claude-sonnet-4-20250514",
       max_tokens: 1024,
-      system: PAUL_SYSTEM_PROMPT,
+      system: systemPrompt,
       messages: messages.map((msg) => ({
         role: msg.role,
         content: msg.content,
